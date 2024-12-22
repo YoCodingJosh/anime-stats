@@ -3,4 +3,5 @@ packages:
   - 'packages/*'
 
 catalog:
+  vite: ^6.0.5
   zod: ^3.24.1

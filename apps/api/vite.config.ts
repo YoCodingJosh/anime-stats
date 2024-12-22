@@ -10,5 +10,8 @@ export default defineConfig({
       adapter,
       entry: 'src/index.ts'
     })
-  ]
+  ],
+  server: {
+    port: 4200,
+  }
 })

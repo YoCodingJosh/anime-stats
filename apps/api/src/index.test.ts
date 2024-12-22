@@ -1,8 +1,12 @@
-import { describe, expect, test, vi} from "vitest";
+import { afterEach, describe, expect, test, vi} from "vitest";
 
 import app from "./index";
 
 describe("root endpoints", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   test("GET /", async () => {
     const res = await app.request("/");
     expect(await res.json()).toStrictEqual({ message: "Yo!" });
@@ -50,9 +54,7 @@ describe("root endpoints", () => {
 
     global.fetch = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({
-        "hello": "world",
-        "foo": "bar",
-        "baz": 123,
+        "error": "Internal Server Error",
       }), { status: 500 })
     );
 
