@@ -1,11 +1,11 @@
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { useContext } from "react";
+import { use } from "react";
 import ThemeContext from "./theme-context";
 
 export default function TitleBar() {
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme, setTheme } = use(ThemeContext);
 
   return (
     <nav className="border-b">
@@ -34,6 +34,9 @@ export default function TitleBar() {
                 onClick={() => setTheme('dark')}
               >
                 Dark
+                <span className="ml-auto w-8 h-auto">
+                  <img className="pointer-events-none" src="/img/3878_darkness_lewdest.gif" alt="Darkness heavy breathing" />
+                </span>
               </DropdownMenuCheckboxItem>
               <DropdownMenuSeparator />
               <DropdownMenuCheckboxItem
