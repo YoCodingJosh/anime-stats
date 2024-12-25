@@ -4,6 +4,8 @@ import { prettyJSON } from 'hono/pretty-json'
 
 import type Bindings from './bindings'
 
+import api from './api'
+
 const app = new Hono<{ Bindings: Bindings }>();
 
 // TODO: CORS and CSRF
@@ -21,7 +23,7 @@ app.get('/health', async (c) => {
     { headers: { 'X-MAL-CLIENT-ID': c.env.MAL_CLIENT_ID } }
   );
 
-  console.log("Actual MAL response: ", await response.text());
+  // console.log("Actual MAL response: ", await response.text());
 
   if (response.ok) {
     return c.json({ ok: true, services: ['mal'] });
@@ -31,5 +33,7 @@ app.get('/health', async (c) => {
     return c.json({ ok: false, services: [], message: `MAL is unavailable: ${response.status}` });
   }
 })
+
+app.route('/api', api);
 
 export default app

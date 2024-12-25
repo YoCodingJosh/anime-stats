@@ -9,6 +9,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@repo/schemas": "workspace:*",
     "hono": "^4.6.14",
     "zod": "catalog:"
   },
