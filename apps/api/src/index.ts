@@ -2,6 +2,8 @@ import { Hono } from 'hono'
 import { poweredBy } from 'hono/powered-by'
 import { prettyJSON } from 'hono/pretty-json'
 
+import { Health } from '@repo/schemas'
+
 import type Bindings from './bindings'
 
 import api from './api'
@@ -26,11 +28,22 @@ app.get('/health', async (c) => {
   // console.log("Actual MAL response: ", await response.text());
 
   if (response.ok) {
-    return c.json({ ok: true, services: ['mal'] });
+    const value: Health = {
+      ok: true,
+      services: ['mal']
+    }
+
+    return c.json(value, 200);
   } else {
+    const value: Health = {
+      ok: false,
+      services: ['mal'],
+      message: `MAL is unavailable: ${response.status}`
+    }
+
     // I know that I should probably return a 503 (or whatever MAL sends us),
     // but I don't want to signal to the frontend that the service is unavailable.
-    return c.json({ ok: false, services: [], message: `MAL is unavailable: ${response.status}` });
+    return c.json(value, 200);
   }
 })
 
