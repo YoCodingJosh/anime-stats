@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { HealthSchema, Health } from "@repo/schemas";
 import { getErrorAsError } from "@/lib/utils";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 interface CheckHealthHookProps {
   /**
    * The interval in milliseconds to refresh the health status.
@@ -21,7 +23,7 @@ export default function useCheckHealth(props?: CheckHealthHookProps) {
   async function checkHealth() {
     setIsChecking(true);
     try {
-      const response = await fetch("/health");
+      const response = await fetch(`${BACKEND_URL}/health`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

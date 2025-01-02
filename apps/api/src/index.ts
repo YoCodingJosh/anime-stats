@@ -1,6 +1,8 @@
 import { Hono } from 'hono'
 import { poweredBy } from 'hono/powered-by'
 import { prettyJSON } from 'hono/pretty-json'
+import { cors } from 'hono/cors'
+import { csrf } from 'hono/csrf'
 
 import { Health } from '@repo/schemas'
 
@@ -8,11 +10,29 @@ import type Bindings from './bindings'
 
 import api from './api'
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+const productionOrigins = [
+  'https://codingjosh.com',
+  'https://anime-stats.codingjosh.com',
+];
+
+const developmentOrigins = [
+  'http://localhost:6969',
+];
+
 const app = new Hono<{ Bindings: Bindings }>();
 
-// TODO: CORS and CSRF
 app.use('*', poweredBy());
 app.use('*', prettyJSON());
+app.use(cors({
+  origin: isProduction ? productionOrigins : developmentOrigins,
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+}))
+app.use(csrf({
+  origin: isProduction ? productionOrigins : developmentOrigins,
+}))
 
 app.notFound((c) => c.json({ message: 'Not Found', ok: false }, 404));
 
