@@ -25,14 +25,11 @@ const app = new Hono<{ Bindings: Bindings }>();
 
 app.use('*', poweredBy());
 app.use('*', prettyJSON());
-app.use(cors({
+app.use('*', cors({
   origin: isProduction ? productionOrigins : developmentOrigins,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
-}))
-app.use(csrf({
-  origin: isProduction ? productionOrigins : developmentOrigins,
-}))
+}));
 
 app.notFound((c) => c.json({ message: 'Not Found', ok: false }, 404));
 
