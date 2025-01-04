@@ -4,7 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import useCheckHealth from '@/hooks/useCheckHealth'
 import { createLazyFileRoute } from '@tanstack/react-router'
+
+import { useCallback, useState } from 'react'
 import { AlertCircleIcon } from 'lucide-react'
+import { getErrorAsError } from '@/lib/utils'
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 export const Route = createLazyFileRoute('/')({
   component: Index,
@@ -16,6 +21,38 @@ function Index() {
     isChecking,
     error,
   } = useCheckHealth()
+
+  const [username, setUsername] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [fetchError, setFetchError] = useState<string | null>(null)
+
+  const handleGo = useCallback(async () => {
+    if (!isHealthy || isChecking) return
+
+    setIsLoading(true)
+    setFetchError(null)
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/${username}`, {
+        method: 'POST',
+      })
+
+      const data = await response.json()
+
+      if (response.status === 404) {
+        setFetchError('User not found')
+        return
+      }
+
+      console.log(data)
+    } catch (err) {
+      const error = getErrorAsError(err)
+      setFetchError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
+
+  }, [isChecking, isHealthy, username])
 
   return (
     <div className="flex flex-col justify-center items-center h-[85svh] gap-10">
@@ -32,9 +69,14 @@ function Index() {
           <CardDescription>Enter your username, and let's crunch some numbers!</CardDescription>
         </CardHeader>
         <CardContent>
-          <Input disabled={!isHealthy} placeholder="MyAnimeList username" />
-          <Button disabled={!isHealthy} className='mt-4 w-full bg-blue-600 text-white transition-all duration-300 hover:bg-blue-700'>
-            {isHealthy ? 'Go!' : isChecking ? 'Starting up...' : ':('}
+          { fetchError && <div className="text-red-500 mb-2">{fetchError}</div>}
+          <Input disabled={!isHealthy} placeholder="MyAnimeList username" required onChange={(e) => setUsername(e.target.value)} />
+          <Button disabled={!isHealthy || isChecking || isLoading} className='mt-4 w-full bg-blue-600 text-white transition-all duration-300 hover:bg-blue-700' onClick={handleGo}>
+            {isLoading ? (
+              <span>
+                <span className="animate-spin">🔄</span> Grabbing data...
+              </span>
+            ) : isHealthy ? 'Go!' : isChecking ? 'Starting up...' : ':('}
           </Button>
         </CardContent>
       </Card>
