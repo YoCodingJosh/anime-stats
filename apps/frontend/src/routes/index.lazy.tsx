@@ -61,7 +61,7 @@ function Index() {
       }
 
       if (!response.ok) {
-        throw new Error(data.error)
+        throw new Error(data.message ?? data.error)
       }
 
       setUserData(data)

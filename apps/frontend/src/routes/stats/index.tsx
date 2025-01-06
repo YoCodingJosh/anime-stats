@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { userDataAtom, store } from "@/atoms";
 import { useAtomValue } from "jotai";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Route = createFileRoute("/stats/")({
   component: RouteComponent,
@@ -14,6 +15,8 @@ export const Route = createFileRoute("/stats/")({
         replace: true,
       });
     }
+
+    // TODO: Check if the user has cached stats data (and if it's stale)
   },
 });
 
@@ -25,5 +28,13 @@ function RouteComponent() {
     return null;
   }
 
-  return <div>Hello {userData?.username}!</div>;
+  return (
+    <div>
+      <Avatar>
+        <AvatarImage src={userData.avatar} alt={`Avatar image of ${userData.username}`} />
+        <AvatarFallback>Yo!</AvatarFallback>
+      </Avatar>
+      <span>Hello {userData.username}!</span>
+    </div>
+  );
 }

@@ -19,7 +19,12 @@ app.post("/:username", async (c) => {
     if (jikanResponse.status === 404) {
       return c.json({ message: "User not found" }, 404);
     } else {
-      return c.json({ message: "An error occurred in an internal service.", status: jikanResponse.status, error: jikanResponse.message }, 500);
+      if ('messages' in jikanResponse && jikanResponse.messages) {
+        const errorMessages = Object.values(jikanResponse.messages).flat().join(", ");
+        return c.json({ message: errorMessages, status: jikanResponse.status }, 500);
+      } else {
+        return c.json({ message: "An error occurred in an internal service.", status: jikanResponse.status, error: jikanResponse.message }, 500);
+      }
     }
   }
 
