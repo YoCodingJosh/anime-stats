@@ -7,7 +7,7 @@ import useCheckHealth from '@/hooks/useCheckHealth'
 import { getErrorAsError } from '@/lib/utils'
 import { userDataAtom } from '@/atoms'
 
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { AlertCircleIcon, Loader2 } from 'lucide-react'
 import { useCallback, useState, useRef } from 'react'
 import { useSetAtom } from 'jotai'
@@ -26,6 +26,8 @@ function Index() {
   } = useCheckHealth()
 
   const setUserData = useSetAtom(userDataAtom)
+
+  const router = useRouter()
 
   // I should use react-hook-form here, but this is the only form in the app and it's a only single field and button
 
@@ -64,6 +66,9 @@ function Index() {
 
       setUserData(data)
 
+      router.navigate({
+        to: '/stats',
+      })
     } catch (err) {
       const error = getErrorAsError(err)
       setFetchError(error.message)
@@ -71,7 +76,7 @@ function Index() {
       setIsLoading(false)
     }
 
-  }, [isChecking, isHealthy, setUserData, username])
+  }, [isChecking, isHealthy, router, setUserData, username])
 
   return (
     <div className="flex flex-col justify-center items-center h-[85svh] gap-10">

@@ -11,6 +11,7 @@ export function getErrorAsError(error: unknown): Error {
   } else if (typeof error === "string") {
     return new Error(error)
   } else {
+    console.error("An unknown error occurred: ", error)
     return new Error("An unknown error occurred")
   }
 }
