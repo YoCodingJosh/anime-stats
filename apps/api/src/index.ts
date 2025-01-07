@@ -2,12 +2,10 @@ import { Hono } from 'hono'
 import { poweredBy } from 'hono/powered-by'
 import { prettyJSON } from 'hono/pretty-json'
 import { cors } from 'hono/cors'
-import { csrf } from 'hono/csrf'
 
 import { Health } from '@repo/schemas'
 
 import type Bindings from './bindings'
-
 import api from './api'
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -23,7 +21,9 @@ const developmentOrigins = [
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.use('*', poweredBy());
+app.use('*', poweredBy({
+  serverName: 'Power of Friendship'
+}));
 app.use('*', prettyJSON());
 app.use('*', cors({
   origin: isProduction ? productionOrigins : developmentOrigins,
