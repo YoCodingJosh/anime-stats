@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test, vi } from "vitest"
 
 import { Context } from "hono"
 import { malFetch } from "./utils"
-import { WatchlistEndpointResponseListStatusSchema, WatchlistEndpointResponseListStatus } from "./mal_schema"
+import { WatchlistEndpointResponseListStatusSchema, WatchlistEndpointResponseListStatus } from "@repo/schemas"
 
 describe("utility functions", () => {
   afterEach(() => {

@@ -1,6 +1,5 @@
 import { Hono } from "hono";
-import { GetUserResponse } from "@repo/schemas";
-import { JikanResponse, JikanResponseSchema} from "./jikan_schema";
+import { GetUserResponse, JikanResponse, JikanResponseSchema } from "@repo/schemas";
 
 const app = new Hono();
 

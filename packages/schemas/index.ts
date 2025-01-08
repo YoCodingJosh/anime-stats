@@ -1,2 +1,5 @@
 export * from './src/health'
 export * from './src/user'
+export * from './src/mal_schema'
+export * from './src/jikan_schema'
+export * from './src/stats'
