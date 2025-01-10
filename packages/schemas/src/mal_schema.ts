@@ -7,6 +7,7 @@ export const AnimeStatusSchema = z.enum(['finished_airing', 'currently_airing', 
 export const MediaTypeSchema = z.enum(['tv', 'ova', 'movie', 'special', 'ona', 'music', 'pv', 'cm', 'tv_special']);
 export const NsfwStatusSchema = z.enum(['white', 'gray', 'black']);
 
+// TODO: fix this schema
 export const WatchlistEndpointResponseListStatusSchema = z.object({
   status: ItemStatusSchema,
   score: z.number(),
@@ -20,6 +21,7 @@ export const WatchlistEndpointResponseListStatusSchema = z.object({
   comments: z.string().optional(),
 });
 
+// TODO: fix this schema
 export const WatchlistEndpointResponseNodeSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -66,7 +68,7 @@ export const WatchlistEndpointResponseSchema = z.object({
   data: z.array(WatchlistEndpointResponseDataSchema),
   paging: z.object({
     next: z.string().optional(),
-  }),
+  }).optional(),
 });
 
 export const WatchlistDataRequestSchema = z.object({
