@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { userDataAtom, store } from "@/atoms";
 import { useAtomValue } from "jotai";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export const Route = createFileRoute("/stats/")({
   component: RouteComponent,
@@ -35,6 +36,7 @@ function RouteComponent() {
         <AvatarFallback>Yo!</AvatarFallback>
       </Avatar>
       <span>Hello {userData.username}!</span>
+      <LoadingSpinner />
     </div>
   );
 }
