@@ -5,10 +5,14 @@ export interface MALResponse<T> {
   data?: T;
   response: {
     status: number;
-  }
+  };
 }
 
-export const malFetch = async <T>(url: string, c: Context, schema: ZodSchema<T>): Promise<MALResponse<T>> => {
+export const malFetch = async <T>(
+  url: string,
+  c: Context,
+  schema: ZodSchema<T>
+): Promise<MALResponse<T>> => {
   const response = await fetch(url, {
     headers: { "X-MAL-CLIENT-ID": c.env.MAL_CLIENT_ID },
   });
@@ -16,19 +20,17 @@ export const malFetch = async <T>(url: string, c: Context, schema: ZodSchema<T>)
   let malResponse: MALResponse<T> = {
     data: undefined,
     response: {
-      status: response.status
-    }
+      status: response.status,
+    },
   };
 
   if (response.ok) {
     const jsonData = await response.json();
-    const parseResult = schema.safeParse(jsonData);
+    
+    // bubble up the error
+    const parseResult = schema.parse(jsonData);
 
-    if (parseResult.success) {
-      malResponse.data = parseResult.data;
-    } else {
-      console.error("Validation failed:", parseResult.error);
-    }
+    malResponse.data = parseResult;
   }
 
   return malResponse;

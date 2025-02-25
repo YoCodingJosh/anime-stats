@@ -49,7 +49,7 @@ describe("root endpoints", () => {
     const expectedResponse = {
       message: "MAL is unavailable: 500",
       ok: false,
-      services: [],
+      services: ['mal'],
     };
 
     global.fetch = vi.fn().mockResolvedValue(
